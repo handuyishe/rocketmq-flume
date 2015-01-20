@@ -87,7 +87,7 @@ agent1.channels=channel1
 agent1.sinks=sink1
 
 agent1.sources.source1.type=com.handu.flume.source.rocketmq.RocketMQSource
-agent1.sources.source1.namesrvAddr=172.16.1.75:9876
+agent1.sources.source1.namesrvAddr=rocketmq_namesrv:9876
 agent1.sources.source1.consumerGroup=MyConsumerGroup_1
 agent1.sources.source1.topic=TopicTest
 agent1.sources.source1.tags=*
