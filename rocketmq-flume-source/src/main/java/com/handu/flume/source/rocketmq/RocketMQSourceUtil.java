@@ -44,7 +44,7 @@ public class RocketMQSourceUtil {
     public static final String TAGS_HEADER_NAME_CONFIG = "tagsHeaderName";
     public static final String TAGS_HEADER_NAME_DEFAULT = "tags";
     /**
-     * Topic header name configuration, eg: a1.sources.r1.tagsHeaderName=name
+     * Topic header name configuration, eg: a1.sources.r1.topicHeaderName=name
      */
     public static final String TOPIC_HEADER_NAME_CONFIG = "topicHeaderName";
     public static final String TOPIC_HEADER_NAME_DEFAULT = "topic";
