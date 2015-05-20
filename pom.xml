@@ -35,7 +35,7 @@
 
     <guava.version>18.0</guava.version>
     <flume.version>1.5.2</flume.version>
-    <rocketmq.version>3.2.2</rocketmq.version>
+    <rocketmq.version>3.2.6</rocketmq.version>
     <junit.version>4.11</junit.version>
     <mockito.version>1.9.0</mockito.version>
   </properties>
@@ -77,6 +77,17 @@
 
   <build>
     <defaultGoal>clean install dependency:copy-dependencies</defaultGoal>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.3</version>
+        <configuration>
+          <source>1.6</source>
+          <target>1.6</target>
+        </configuration>
+      </plugin>
+    </plugins>
   </build>
 
 </project>
