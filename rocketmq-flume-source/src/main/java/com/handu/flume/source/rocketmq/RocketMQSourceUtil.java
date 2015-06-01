@@ -39,6 +39,16 @@ public class RocketMQSourceUtil {
     public static final String TAGS_CONFIG = "tags";
     public static final String TAGS_DEFAULT = "*";
     /**
+     * Tags header name configuration, eg: a1.sources.r1.tagsHeaderName=name
+     */
+    public static final String TAGS_HEADER_NAME_CONFIG = "tagsHeaderName";
+    public static final String TAGS_HEADER_NAME_DEFAULT = "tags";
+    /**
+     * Topic header name configuration, eg: a1.sources.r1.topicHeaderName=name
+     */
+    public static final String TOPIC_HEADER_NAME_CONFIG = "topicHeaderName";
+    public static final String TOPIC_HEADER_NAME_DEFAULT = "topic";
+    /**
      * 一次最多拉取条数配置项，如：a1.sources.r1.maxNums=150
      */
     public static final String MAXNUMS_CONFIG = "maxNums";
