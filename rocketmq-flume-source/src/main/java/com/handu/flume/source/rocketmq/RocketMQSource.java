@@ -51,6 +51,8 @@ public class RocketMQSource extends AbstractSource implements Configurable, Poll
 
     private String topic;
     private String tags;
+    private String topicHeaderName;
+    private String tagsHeaderName;
     private int maxNums;
     private MQPullConsumer consumer;
 
@@ -59,6 +61,8 @@ public class RocketMQSource extends AbstractSource implements Configurable, Poll
         // 初始化配置项
         topic = Preconditions.checkNotNull(context.getString(RocketMQSourceUtil.TOPIC_CONFIG), "RocketMQ topic must be specified. For example: a1.sources.r1.topic=TestTopic");
         tags = context.getString(RocketMQSourceUtil.TAGS_CONFIG, RocketMQSourceUtil.TAGS_DEFAULT);
+        topicHeaderName = context.getString(RocketMQSourceUtil.TOPIC_HEADER_NAME_CONFIG, RocketMQSourceUtil.TOPIC_HEADER_NAME_DEFAULT);
+        tagsHeaderName = context.getString(RocketMQSourceUtil.TAGS_HEADER_NAME_CONFIG, RocketMQSourceUtil.TAGS_HEADER_NAME_DEFAULT);
         maxNums = context.getInteger(RocketMQSourceUtil.MAXNUMS_CONFIG, RocketMQSourceUtil.MAXNUMS_DEFAULT);
 
         // 初始化Consumer
@@ -81,8 +85,11 @@ public class RocketMQSource extends AbstractSource implements Configurable, Poll
                     for (MessageExt messageExt : pullResult.getMsgFoundList()) {
                         event = new SimpleEvent();
                         headers = new HashMap<String, String>();
+                        headers.put(topicHeaderName, messageExt.getTopic());
+                        headers.put(tagsHeaderName, messageExt.getTags());
                         if (LOG.isDebugEnabled()) {
-                            LOG.debug("MessageQueue={}, Message: {}", mq, messageExt.getBody());
+                            LOG.debug("MessageQueue={}, Topic={}, Tags={}, Message: {}",new Object[] {
+                                    mq, messageExt.getTopic(), messageExt.getTags(), messageExt.getBody()});
                         }
                         event.setBody(messageExt.getBody());
                         event.setHeaders(headers);
