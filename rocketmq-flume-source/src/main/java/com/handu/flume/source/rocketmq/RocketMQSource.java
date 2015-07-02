@@ -24,6 +24,7 @@ import com.alibaba.rocketmq.common.message.MessageQueue;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Throwables;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import org.apache.flume.Context;
 import org.apache.flume.Event;
 import org.apache.flume.EventDeliveryException;
@@ -72,8 +73,10 @@ public class RocketMQSource extends AbstractSource implements Configurable, Poll
     @Override
     public Status process() throws EventDeliveryException {
         List<Event> eventList = Lists.newArrayList();
+        Map<MessageQueue, Long> offsetMap = Maps.newHashMap();
         Event event;
         Map<String, String> headers;
+        
         try {
             Set<MessageQueue> mqs = Preconditions.checkNotNull(consumer.fetchSubscribeMessageQueues(topic));
             for (MessageQueue mq : mqs) {
@@ -95,16 +98,19 @@ public class RocketMQSource extends AbstractSource implements Configurable, Poll
                         event.setHeaders(headers);
                         eventList.add(event);
                     }
-                    // 更新offset
-                    this.putMessageQueueOffset(mq, pullResult.getNextBeginOffset());
+                    offsetMap.put(mq, pullResult.getNextBeginOffset());
                 }
+            }
+            // 批量处理事件
+            getChannelProcessor().processEventBatch(eventList);
+            for (Map.Entry<MessageQueue, Long> entry : offsetMap.entrySet()) {
+                // 更新offset
+                this.putMessageQueueOffset(entry.getKey(), entry.getValue());
             }
         } catch (Exception e) {
             LOG.error("RocketMQSource consume message exception", e);
             return Status.BACKOFF;
         }
-        // 批量处理事件
-        getChannelProcessor().processEventBatch(eventList);
         return Status.READY;
     }
 
