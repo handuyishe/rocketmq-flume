@@ -68,6 +68,7 @@ public class RocketMQSource extends AbstractSource implements Configurable, Poll
 
         // 初始化Consumer
         consumer = Preconditions.checkNotNull(RocketMQSourceUtil.getConsumer(context));
+        consumer.registerMessageQueueListener(topic, null);
     }
 
     @Override
